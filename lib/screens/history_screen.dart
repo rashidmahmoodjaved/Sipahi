@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_advance/services/auth_service.dart';
+
+import '../services/auth_service.dart';
 import '../services/chat_service.dart';
 import 'chat_screen.dart';
 
@@ -32,19 +33,18 @@ class HistoryScreen extends StatelessWidget {
                 Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
                 items.add(
                   ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.person),
-                    ),
+                    leading: const CircleAvatar(child: Icon(Icons.person)),
                     title: Text(data['lastMessage'] ?? 'No messages'),
                     subtitle: Text(doc.id),
                     trailing: Text(
-                      DateFormat('HH:mm').format(
-                        (data['lastMessageTime'] as Timestamp).toDate(),
-                      ),
+                      DateFormat(
+                        'HH:mm',
+                      ).format((data['lastMessageTime'] as Timestamp).toDate()),
                     ),
                     onTap: () {
-                      List<String> participants =
-                          List<String>.from(data['participants']);
+                      List<String> participants = List<String>.from(
+                        data['participants'],
+                      );
                       String otherUserId = participants.firstWhere(
                         (id) => id != currentUser.uid,
                       );
@@ -52,10 +52,8 @@ class HistoryScreen extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) => ChatScreen(
-                            userId: otherUserId,
-                            userName: 'User',
-                          ),
+                          builder: (_) =>
+                              ChatScreen(userId: otherUserId, userName: 'User'),
                         ),
                       );
                     },
@@ -70,15 +68,13 @@ class HistoryScreen extends StatelessWidget {
                 Map<String, dynamic> data = doc.data() as Map<String, dynamic>;
                 items.add(
                   ListTile(
-                    leading: const CircleAvatar(
-                      child: Icon(Icons.group),
-                    ),
+                    leading: const CircleAvatar(child: Icon(Icons.group)),
                     title: Text(data['groupName'] ?? 'Group'),
                     subtitle: Text(data['lastMessage'] ?? 'No messages'),
                     trailing: Text(
-                      DateFormat('HH:mm').format(
-                        (data['lastMessageTime'] as Timestamp).toDate(),
-                      ),
+                      DateFormat(
+                        'HH:mm',
+                      ).format((data['lastMessageTime'] as Timestamp).toDate()),
                     ),
                     onTap: () {
                       Navigator.push(
@@ -99,14 +95,10 @@ class HistoryScreen extends StatelessWidget {
             }
 
             if (items.isEmpty) {
-              return const Center(
-                child: Text('No chat history'),
-              );
+              return const Center(child: Text('No chat history'));
             }
 
-            return ListView(
-              children: items,
-            );
+            return ListView(children: items);
           },
         );
       },

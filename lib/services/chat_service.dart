@@ -1,11 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';
-import 'package:todo_advance/model/user_model.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
+
+import '../model/user_model.dart';
 import '../models/message_model.dart';
 
 class ChatService extends ChangeNotifier {
@@ -14,8 +15,8 @@ class ChatService extends ChangeNotifier {
   final ImagePicker _picker = ImagePicker();
 
   List<UserModel> _contacts = [];
-  List<MessageModel> _messages = [];
-  Map<String, List<MessageModel>> _chatHistory = {};
+  final List<MessageModel> _messages = [];
+  final Map<String, List<MessageModel>> _chatHistory = {};
 
   List<UserModel> get contacts => _contacts;
   List<MessageModel> get messages => _messages;
@@ -37,8 +38,9 @@ class ChatService extends ChangeNotifier {
         .get();
 
     if (query.docs.isNotEmpty) {
-      UserModel contact =
-          UserModel.fromMap(query.docs.first.data() as Map<String, dynamic>);
+      UserModel contact = UserModel.fromMap(
+        query.docs.first.data() as Map<String, dynamic>,
+      );
 
       if (!_contacts.any((c) => c.uid == contact.uid)) {
         await _firestore
@@ -91,7 +93,8 @@ class ChatService extends ChangeNotifier {
     return query.snapshots().map((snapshot) {
       return snapshot.docs
           .map(
-              (doc) => MessageModel.fromMap(doc.data() as Map<String, dynamic>))
+            (doc) => MessageModel.fromMap(doc.data() as Map<String, dynamic>),
+          )
           .toList();
     });
   }
@@ -155,8 +158,9 @@ class ChatService extends ChangeNotifier {
       groupId: groupId,
     );
 
-    String collectionPath =
-        groupId != null ? 'groups/$groupId/messages' : 'chats/$chatId/messages';
+    String collectionPath = groupId != null
+        ? 'groups/$groupId/messages'
+        : 'chats/$chatId/messages';
 
     await _firestore
         .collection(collectionPath)
@@ -177,8 +181,8 @@ class ChatService extends ChangeNotifier {
     Position position = await Geolocator.getCurrentPosition(
       desiredAccuracy: LocationAccuracy.high,
     );
-
-    List<Placemark> placemarks = await placemarkFromCoordinates(
+    final Geocoding geocoding = Geocoding();
+    List<Placemark> placemarks = await geocoding.placemarkFromCoordinates(
       position.latitude,
       position.longitude,
     );
@@ -199,8 +203,9 @@ class ChatService extends ChangeNotifier {
       groupId: groupId,
     );
 
-    String collectionPath =
-        groupId != null ? 'groups/$groupId/messages' : 'chats/$chatId/messages';
+    String collectionPath = groupId != null
+        ? 'groups/$groupId/messages'
+        : 'chats/$chatId/messages';
 
     await _firestore
         .collection(collectionPath)

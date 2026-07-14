@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:todo_advance/model/user_model.dart';
+
+import '../model/user_model.dart';
 import '../services/auth_service.dart';
 import '../services/chat_service.dart';
 import 'chat_screen.dart';
@@ -53,10 +54,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
             onPressed: () => Navigator.pop(context),
             child: const Text('Cancel'),
           ),
-          TextButton(
-            onPressed: _addContact,
-            child: const Text('Add'),
-          ),
+          TextButton(onPressed: _addContact, child: const Text('Add')),
         ],
       ),
     );
@@ -65,9 +63,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
   void _showCreateGroupDialog() {
     Navigator.push(
       context,
-      MaterialPageRoute(
-        builder: (_) => const CreateGroupScreen(),
-      ),
+      MaterialPageRoute(builder: (_) => const CreateGroupScreen()),
     );
   }
 
@@ -105,9 +101,7 @@ class _ContactsScreenState extends State<ContactsScreen> {
             ),
             Expanded(
               child: chatService.contacts.isEmpty
-                  ? const Center(
-                      child: Text('No contacts yet'),
-                    )
+                  ? const Center(child: Text('No contacts yet'))
                   : ListView.builder(
                       itemCount: chatService.contacts.length,
                       itemBuilder: (context, index) {
@@ -204,10 +198,7 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
               alignment: Alignment.centerLeft,
               child: Text(
                 'Select Members',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
               ),
             ),
           ),
@@ -248,10 +239,10 @@ class _CreateGroupScreenState extends State<CreateGroupScreen> {
     if (_groupNameController.text.trim().isNotEmpty &&
         _selectedMembers.isNotEmpty) {
       await context.read<ChatService>().createGroup(
-            groupName: _groupNameController.text.trim(),
-            creatorId: context.read<AuthService>().user!.uid,
-            memberIds: _selectedMembers.toList(),
-          );
+        groupName: _groupNameController.text.trim(),
+        creatorId: context.read<AuthService>().user!.uid,
+        memberIds: _selectedMembers.toList(),
+      );
 
       if (mounted) {
         Navigator.pop(context);

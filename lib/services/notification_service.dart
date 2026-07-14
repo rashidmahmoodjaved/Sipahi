@@ -27,17 +27,17 @@ class NotificationService {
 
     const DarwinInitializationSettings iosSettings =
         DarwinInitializationSettings(
-      requestAlertPermission: true,
-      requestBadgePermission: true,
-      requestSoundPermission: true,
-    );
+          requestAlertPermission: true,
+          requestBadgePermission: true,
+          requestSoundPermission: true,
+        );
 
     const InitializationSettings settings = InitializationSettings(
       android: androidSettings,
       iOS: iosSettings,
     );
 
-    await _localNotifications.initialize(settings);
+    await _localNotifications.initialize(settings: settings);
   }
 
   void _setupMessageHandlers() {
@@ -59,12 +59,12 @@ class NotificationService {
   Future<void> _showNotification(RemoteMessage message) async {
     const AndroidNotificationDetails androidDetails =
         AndroidNotificationDetails(
-      'sipahi_channel',
-      'Sipahi Notifications',
-      channelDescription: 'Notifications for Sipahi app',
-      importance: Importance.high,
-      priority: Priority.high,
-    );
+          'sipahi_channel',
+          'Sipahi Notifications',
+          channelDescription: 'Notifications for Sipahi app',
+          importance: Importance.high,
+          priority: Priority.high,
+        );
 
     const DarwinNotificationDetails iosDetails = DarwinNotificationDetails();
 
@@ -74,10 +74,10 @@ class NotificationService {
     );
 
     await _localNotifications.show(
-      message.hashCode,
-      message.notification?.title ?? 'New Message',
-      message.notification?.body ?? '',
-      details,
+      id: message.hashCode,
+      title: message.notification?.title ?? 'New Message',
+      body: message.notification?.body ?? '',
+      notificationDetails: details,
     );
   }
 
