@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import '../services/call_service.dart';
 
 class CallScreen extends StatefulWidget {
@@ -51,8 +52,11 @@ class _CallScreenState extends State<CallScreen> {
                         CircleAvatar(
                           radius: 50,
                           backgroundColor: Colors.white24,
-                          child:
-                              Icon(Icons.person, size: 50, color: Colors.white),
+                          child: Icon(
+                            Icons.person,
+                            size: 50,
+                            color: Colors.white,
+                          ),
                         ),
                         SizedBox(height: 20),
                         Text(
@@ -66,10 +70,7 @@ class _CallScreenState extends State<CallScreen> {
                         SizedBox(height: 8),
                         Text(
                           'Connecting...',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 16,
-                          ),
+                          style: TextStyle(color: Colors.white70, fontSize: 16),
                         ),
                       ],
                     ),
@@ -82,8 +83,9 @@ class _CallScreenState extends State<CallScreen> {
                     children: [
                       FloatingActionButton(
                         onPressed: () => callService.toggleMute(),
-                        backgroundColor:
-                            callService.isMuted ? Colors.red : Colors.white24,
+                        backgroundColor: callService.isMuted
+                            ? Colors.red
+                            : Colors.white24,
                         child: Icon(
                           callService.isMuted ? Icons.mic_off : Icons.mic,
                           color: Colors.white,
@@ -94,10 +96,7 @@ class _CallScreenState extends State<CallScreen> {
                         backgroundColor: callService.isSpeakerOn
                             ? Colors.white24
                             : Colors.white10,
-                        child: const Icon(
-                          Icons.volume_up,
-                          color: Colors.white,
-                        ),
+                        child: const Icon(Icons.volume_up, color: Colors.white),
                       ),
                       FloatingActionButton(
                         onPressed: () {
@@ -105,10 +104,7 @@ class _CallScreenState extends State<CallScreen> {
                           Navigator.pop(context);
                         },
                         backgroundColor: Colors.red,
-                        child: const Icon(
-                          Icons.call_end,
-                          color: Colors.white,
-                        ),
+                        child: const Icon(Icons.call_end, color: Colors.white),
                       ),
                     ],
                   ),

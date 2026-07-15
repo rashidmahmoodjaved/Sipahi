@@ -1,11 +1,12 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
 import 'app.dart';
 import 'config/firebase_config.dart';
 import 'services/auth_service.dart';
-import 'services/chat_service.dart';
 import 'services/call_service.dart';
+import 'services/chat_service.dart';
 import 'services/notification_service.dart';
 
 void main() async {

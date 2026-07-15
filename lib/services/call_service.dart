@@ -9,7 +9,7 @@ class CallService extends ChangeNotifier {
   bool _isMuted = false;
   bool _isSpeakerOn = true;
   String? _channelName;
-  String _appId = "204bc030230e488ba433b27db2a78aac";
+  final String _appId = "204bc030230e488ba433b27db2a78aac";
 
   bool get isInCall => _isInCall;
   bool get isMuted => _isMuted;
@@ -20,23 +20,27 @@ class CallService extends ChangeNotifier {
     await [Permission.microphone, Permission.camera].request();
 
     _engine = createAgoraRtcEngine();
-    await _engine!.initialize(RtcEngineContext(
-      appId: _appId,
-      channelProfile: ChannelProfileType.channelProfileCommunication,
-    ));
+    await _engine!.initialize(
+      RtcEngineContext(
+        appId: _appId,
+        channelProfile: ChannelProfileType.channelProfileCommunication,
+      ),
+    );
 
-    _engine!.registerEventHandler(RtcEngineEventHandler(
-      onJoinChannelSuccess: (connection, elapsed) {
-        _isInCall = true;
-        notifyListeners();
-      },
-      onUserJoined: (connection, uid, elapsed) {
-        notifyListeners();
-      },
-      onUserOffline: (connection, uid, reason) {
-        notifyListeners();
-      },
-    ));
+    _engine!.registerEventHandler(
+      RtcEngineEventHandler(
+        onJoinChannelSuccess: (connection, elapsed) {
+          _isInCall = true;
+          notifyListeners();
+        },
+        onUserJoined: (connection, uid, elapsed) {
+          notifyListeners();
+        },
+        onUserOffline: (connection, uid, reason) {
+          notifyListeners();
+        },
+      ),
+    );
 
     await _engine!.enableAudio();
     await _engine!.startPreview();
